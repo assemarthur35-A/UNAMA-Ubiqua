@@ -1,0 +1,43 @@
+/* Estilos da seção Google Maps */
+.maps-section { background: var(--surface, #f6f8fa); }
+.maps-toolbar { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 12px; }
+.maps-status { padding:12px 14px; border:1px solid var(--line, #d8dee5); border-radius:12px; background:var(--panel, #fff); margin:12px 0 18px; }
+.maps-status.is-error { border-color:#c87935; }
+.maps-layout { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr); gap:18px; align-items:start; }
+.hospital-map { min-height:440px; width:100%; overflow:hidden; border:1px solid var(--line, #d8dee5); border-radius:16px; background:var(--panel, #fff); display:flex; align-items:center; justify-content:center; color:var(--muted, #65717e); text-align:center; padding:16px; }
+.hospital-map > p { max-width:340px; }
+.maps-results-wrap { min-width:0; }
+.maps-results-wrap h3 { margin:0 0 12px; }
+.nearby-results { display:grid; gap:10px; max-height:440px; overflow:auto; padding:2px; }
+.nearby-hospital-card { border:1px solid var(--line, #d8dee5); background:var(--panel, #fff); border-radius:13px; padding:13px; }
+.nearby-hospital-card h4 { margin:0 0 6px; font-size:1rem; line-height:1.35; }
+.nearby-hospital-card p { margin:5px 0; font-size:.92rem; overflow-wrap:anywhere; }
+.maps-place-meta { color:var(--muted, #65717e); }
+.nearby-hospital-card .btn { margin-top:8px; width:100%; }
+.maps-empty { color:var(--muted, #65717e); border:1px dashed var(--line, #d8dee5); border-radius:12px; padding:16px; margin:0; }
+.maps-route { display:grid; gap:10px; margin-top:16px; padding:15px; border:1px solid var(--line, #d8dee5); background:var(--panel, #fff); border-radius:14px; }
+.maps-route select { width:100%; min-height:44px; }
+.route-summary { font-size:.94rem; line-height:1.5; overflow-wrap:anywhere; }
+.route-summary p { margin:6px 0; }
+.route-summary a { display:inline-block; margin-top:4px; font-weight:700; }
+.maps-disclaimer { margin-top:16px; font-size:.9rem; color:var(--muted, #65717e); line-height:1.55; }
+#findNearbyHospitals:disabled, #calculateHospitalRoute:disabled { opacity:.6; cursor:wait; }
+@media (max-width:800px) {
+  .maps-layout { grid-template-columns:1fr; }
+  .hospital-map { min-height:340px; }
+  .nearby-results { max-height:none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .maps-section *, .maps-section *::before, .maps-section *::after { scroll-behavior:auto !important; animation:none !important; transition:none !important; }
+}
+
+/* Mapa ao vivo (Leaflet/Google) e marcadores por nível de demanda */
+.hospital-map.is-live { display:block; padding:0; min-height:440px; }
+.map-pin span { display:grid; place-items:center; width:32px; height:32px; border-radius:50%; color:#fff; font:700 .95rem var(--f-body); border:2px solid #fff; box-shadow:0 2px 6px #0006; }
+.pin-ok span { background:var(--ok); } .pin-warn span { background:var(--warn); }
+.pin-hi span { background:var(--hi); } .pin-crit span { background:var(--crit); } .pin-plain span { background:var(--accent); }
+.map-popup { display:grid; gap:6px; min-width:180px; }
+.map-popup p { margin:0; font-size:.9rem; }
+.nearby-hospital-card .pill { display:inline-block; margin-top:4px; }
+#mapSort { align-self:center; }
+@media (max-width:800px) { .hospital-map.is-live { min-height:340px; } }

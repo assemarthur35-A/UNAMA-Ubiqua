@@ -1,0 +1,27 @@
+/* Tamanho da letra */
+html[data-size="grande"]{font-size:118%}
+html[data-size="enorme"]{font-size:138%}
+.sizer{display:flex;align-items:center;gap:4px;font-size:.85rem;color:var(--muted)}
+.sizer span{margin-right:4px}
+.sizer button{min-width:40px;min-height:40px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:700 1rem var(--f-body);cursor:pointer;line-height:1}
+.sizer button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+
+/* Modo acolhedor: preferências sensoriais personalizáveis, sem presumir necessidades iguais */
+.autism-toggle{border:1px solid var(--accent);background:var(--accent-soft);color:var(--ink);border-radius:999px;padding:10px 14px;min-height:44px;font:700 .95rem var(--f-body);cursor:pointer;white-space:nowrap}
+.autism-toggle[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.sensory-panel{margin:20px auto 28px;padding:clamp(18px,3vw,30px);border:1px solid var(--line);border-radius:20px;background:var(--surface);box-shadow:0 8px 28px #102c3010}
+.sensory-intro{max-width:720px}.sensory-intro h2{margin:.15rem 0 .5rem}.sensory-intro p:last-child{color:var(--muted);margin-top:0}
+.quick-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}
+.quick-card{display:flex;flex-direction:column;align-items:flex-start;gap:7px;text-align:left;text-decoration:none;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:16px;min-height:145px;font:inherit;cursor:pointer}
+.quick-card>span{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-size:1.6rem}
+.quick-card strong{font-size:1.03rem;line-height:1.25}.quick-card small{color:var(--muted);font-size:.92rem;line-height:1.4}
+.quick-card:hover,.quick-card:focus-visible{border-color:var(--accent);transform:translateY(-1px)}
+.calm-message{padding:18px;border-radius:14px;background:var(--accent-soft);border:1px solid var(--accent);margin:16px 0}.calm-message p{margin:.4rem 0 1rem}
+.sensory-settings{display:flex;gap:12px 22px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--line)}.sensory-settings label{display:flex;gap:9px;align-items:center;min-height:40px;cursor:pointer}
+html.sensory-calm{scroll-behavior:auto}html.sensory-calm *,html.sensory-calm *::before,html.sensory-calm *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+html.sensory-simple main>section:not(#hospitais):not(#agendar):not(#consultas){display:none}
+html.sensory-simple .top nav a:not([href="#hospitais"]):not([href="#agendar"]):not([href="#consultas"]){display:none}
+html.sensory-large-targets button,html.sensory-large-targets a,html.sensory-large-targets input,html.sensory-large-targets select{min-height:48px}
+@media(max-width:800px){.quick-actions{grid-template-columns:repeat(2,minmax(0,1fr))}.autism-toggle{font-size:.85rem;padding:9px 10px}}
+@media(max-width:420px){.quick-actions{grid-template-columns:1fr}.quick-card{min-height:unset}}

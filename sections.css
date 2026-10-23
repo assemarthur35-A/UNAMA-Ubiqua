@@ -1,0 +1,12 @@
+/* Seções, títulos e textos de apoio */
+section{padding-block:56px 0;scroll-margin-top:104px}
+#hospitais{padding-top:34px}
+.eyebrow{font:500 .75rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font:700 clamp(2rem,5vw,3.2rem)/1.05 var(--f-display);letter-spacing:-.025em;margin:10px 0 14px;max-width:20ch}
+h2{font:700 clamp(1.5rem,3vw,1.9rem)/1.15 var(--f-display);letter-spacing:-.015em;margin:6px 0 6px}
+h3{font:700 1.05rem/1.25 var(--f-display);margin:0}
+.big{font:700 clamp(1.8rem,4.2vw,2.7rem)/1.06 var(--f-display);letter-spacing:-.02em;margin:10px 0 12px}
+.lead{color:var(--muted);max-width:62ch;margin:0}
+.lvl.ok{color:var(--ok)}.lvl.warn{color:var(--warn)}.lvl.hi{color:var(--hi)}.lvl.crit{color:var(--crit)}
+.where{font-size:.95rem;color:var(--muted);margin:10px 0 0}
+.where strong{color:var(--ink)}

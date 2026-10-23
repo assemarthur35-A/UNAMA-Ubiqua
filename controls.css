@@ -1,0 +1,23 @@
+/* Botões, filtros e campos de formulário */
+.btn{font:600 .95rem var(--f-body);min-height:44px;padding:10px 16px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.btn:hover{filter:brightness(1.07)}
+.btn:disabled{opacity:.5;cursor:not-allowed;filter:none}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.ghost:hover{background:var(--accent-soft);filter:none}
+.btn.danger{background:var(--crit);border-color:var(--crit);color:var(--bg)}
+.btn.small{min-height:36px;padding:6px 12px;font-size:.88rem}
+input[type=text],input[type=tel],input[type=date],select{font:inherit;width:100%;min-height:44px;padding:9px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+input:disabled,select:disabled{opacity:.55;cursor:not-allowed}
+input[type=text]::placeholder,input[type=tel]::placeholder{color:var(--muted);opacity:.8}
+label.f{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+legend{font-weight:600;font-size:.9rem;padding:0;margin-bottom:6px}
+
+.filters{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:22px 0 18px}
+.filters .fld{flex:1 1 200px;min-width:0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface);flex-wrap:wrap}
+.seg button{font:600 .9rem var(--f-body);min-height:44px;padding:8px 14px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink)}
+.meta{font:500 .8rem var(--f-mono);color:var(--muted);margin:0 0 10px}
+

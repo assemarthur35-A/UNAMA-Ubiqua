@@ -1,0 +1,35 @@
+/* Agendamento e consultas do paciente */
+.book{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;margin-top:22px;align-items:start}
+.form{display:grid;gap:18px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.slots{display:flex;flex-wrap:wrap;gap:8px}
+.slot{position:relative}
+.slot input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.slot label{display:block;min-width:68px;text-align:center;padding:9px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font:500 .92rem var(--f-mono);font-variant-numeric:tabular-nums}
+.slot input:checked+label{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.slot input:focus-visible+label{outline:2px solid var(--accent);outline-offset:2px}
+.slot input:disabled{cursor:not-allowed}
+.slot input:disabled+label{color:var(--muted);text-decoration:line-through;background:var(--surface-2);opacity:.7}
+.hint{color:var(--muted);margin:0;font-size:.92rem}
+.notice{border-radius:6px;padding:12px 14px;font-size:.92rem;background:var(--warn-bg);display:grid;gap:10px;width:100%}
+.notice.crit{background:var(--crit-bg)}
+.notice p{margin:0}
+.notice .acts{display:flex;flex-wrap:wrap;gap:8px}
+.err{background:var(--crit-bg);border-radius:6px;padding:10px 14px;font-size:.92rem}
+.err ul{margin:0;padding-left:18px}
+.summary h3{margin-bottom:12px}
+.summary dl.kv{grid-template-columns:auto minmax(0,1fr);gap:8px 14px}
+.summary dd{font-weight:600}
+.summary dd.dim{color:var(--muted);font-weight:400}
+.done{background:var(--ok-bg);border-radius:10px;padding:16px 18px;margin-top:16px}
+.done h3{color:var(--ok);margin-bottom:6px}
+.done p{margin:4px 0}
+
+/* consultas */
+.appts{display:grid;gap:12px;margin-top:20px}
+.appt{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.appt .when{font:700 1.5rem/1 var(--f-display);text-align:center;min-width:72px}
+.appt .when small{display:block;font:500 .72rem var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:6px}
+.appt p{margin:0;font-size:.92rem;color:var(--muted)}
+.appt h3{margin-bottom:2px}
+

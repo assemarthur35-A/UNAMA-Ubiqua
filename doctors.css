@@ -1,0 +1,15 @@
+/* Cartões de médicos */
+.docs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:16px}
+.doc{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.doc header{display:flex;gap:12px;align-items:center}
+.av{width:44px;height:44px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font:700 .95rem var(--f-display);flex:none}
+.doc .esp{margin:2px 0 0;color:var(--muted);font-size:.9rem}
+.abs{background:var(--crit-bg);border-radius:6px;padding:10px 12px;font-size:.9rem}
+.abs strong{color:var(--crit)}
+.abs p{margin:0}.abs p+p{margin-top:6px}
+.soon{font-size:.85rem;color:var(--warn);margin:0}
+dl.kv{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:.9rem}
+dl.kv dt{color:var(--muted)}dl.kv dd{margin:0;font-variant-numeric:tabular-nums}
+.doc .btn{margin-top:auto}
+.empty{color:var(--muted);padding:24px 0}
+

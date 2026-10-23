@@ -1,0 +1,22 @@
+/* Painel da equipe */
+.team{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;margin-top:22px;align-items:start}
+.ctl{display:grid;gap:18px}
+.ctl .head{display:flex;justify-content:space-between;gap:12px;font-weight:600;font-size:.92rem}
+.ctl output{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.ctl input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--crit-bg);border-radius:99px;padding:4px 6px 4px 12px;font-size:.85rem}
+.chip button{border:0;background:transparent;color:var(--ink);font-size:1.1rem;line-height:1;cursor:pointer;width:28px;height:28px;border-radius:50%}
+.chip button:hover{background:var(--surface)}
+.calc{font-size:.92rem}
+.calc p{margin:0 0 10px}
+.calc code{font:500 .85rem var(--f-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px}
+.calc table{min-width:0;margin-top:8px}
+.calc td,.calc th{padding-right:8px}
+.live{font:500 .85rem var(--f-mono);background:var(--surface-2);border-radius:6px;padding:10px 12px;margin-top:12px;font-variant-numeric:tabular-nums}
+
+footer{margin-top:72px;border-top:1px solid var(--line);background:var(--surface)}
+footer .wrap{padding-block:24px;display:flex;flex-wrap:wrap;gap:8px 32px;justify-content:space-between;font-size:.88rem;color:var(--muted)}
+footer p{margin:0;max-width:60ch}
+footer strong{color:var(--ink)}
+

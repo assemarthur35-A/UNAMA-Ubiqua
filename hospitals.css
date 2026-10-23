@@ -1,0 +1,19 @@
+/* Lista de unidades */
+.sumrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0 14px}
+.sum{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.sum small{display:block;font:500 .72rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sum strong{display:block;font:700 1.1rem/1.25 var(--f-display);margin-top:4px;overflow-wrap:anywhere}
+.sum span{font-size:.9rem;color:var(--muted)}
+.hlist{display:grid;gap:10px}
+.hosp{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.4fr) minmax(0,.8fr) auto;gap:10px 20px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 18px}
+.hosp.sel{box-shadow:0 0 0 2px var(--accent)}
+.hosp h3{margin:0 0 4px}
+.h-meta{margin:0;font-size:.9rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+.tag{font:600 .72rem var(--f-body);padding:3px 8px;border-radius:4px;background:var(--accent-soft);color:var(--accent)}
+.tag.priv{background:var(--surface-2);color:var(--muted)}
+.h-lvl{display:grid;gap:8px;justify-items:start;min-width:0}
+.h-lvl .row{display:flex;align-items:center;gap:8px;width:100%}
+.h-wait b{font:700 1.5rem/1 var(--f-display);font-variant-numeric:tabular-nums}
+.h-wait small{display:block;color:var(--muted);font-size:.8rem}
+.best{font:600 .75rem var(--f-body);color:var(--ok)}
+
