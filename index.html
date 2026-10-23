@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Saúde Agora · demanda dos hospitais, médicos e consultas</title>
+<meta name="description" content="Protótipo acessível que mostra qual hospital está menos cheio, a agenda dos médicos, o mapa de unidades e o agendamento de consultas. Dados fictícios.">
+<meta name="theme-color" content="#0A6C74">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='7' fill='%230A6C74'/%3E%3Cpath d='M12.5 6h5v6.5H24v5h-6.5V24h-5v-6.5H6v-5h6.5z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/header.css">
+<link rel="stylesheet" href="css/sections.css">
+<link rel="stylesheet" href="css/hospitals.css">
+<link rel="stylesheet" href="css/demand.css">
+<link rel="stylesheet" href="css/controls.css">
+<link rel="stylesheet" href="css/doctors.css">
+<link rel="stylesheet" href="css/booking.css">
+<link rel="stylesheet" href="css/staff.css">
+<link rel="stylesheet" href="css/accessibility.css">
+<link rel="stylesheet" href="css/assistant.css">
+<link rel="stylesheet" href="css/maps.css">
+</head>
+<body>
+<a class="skip" href="#main">Pular para o conteúdo</a>
+
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="#hospitais" aria-label="Saúde Agora, início">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="7" fill="var(--accent)"/><path d="M12.5 6h5v6.5H24v5h-6.5V24h-5v-6.5H6v-5h6.5z" fill="var(--accent-ink)"/></svg>
+      <span><strong>Saúde Agora</strong><small>Rede de hospitais · dados fictícios</small></span>
+    </a>
+    <nav aria-label="Seções do site">
+      <a href="#hospitais">Unidades</a>
+      <a href="#mapa-hospitais">Mapa e rotas</a>
+      <a href="#medicos">Médicos</a>
+      <a href="#agendar">Agendar</a>
+      <a href="#consultas">Minhas consultas <span class="count" id="navCount" hidden>0</span></a>
+      <a href="#equipe">Equipe</a>
+    </nav>
+    <button type="button" class="autism-toggle" id="autismToggle" aria-pressed="false" aria-controls="sensoryPanel">☼ Modo acolhedor</button>
+    <div class="sizer" role="group" aria-label="Tamanho da letra">
+      <span>Letra</span>
+      <button type="button" data-size="normal" aria-pressed="true" aria-label="Letra normal" style="font-size:.9rem">A</button>
+      <button type="button" data-size="grande" aria-pressed="false" aria-label="Letra grande" style="font-size:1.15rem">A</button>
+      <button type="button" data-size="enorme" aria-pressed="false" aria-label="Letra muito grande" style="font-size:1.4rem">A</button>
+    </div>
+  </div>
+</header>
+
+<section class="sensory-panel wrap" id="sensoryPanel" aria-labelledby="sensoryTitle" hidden>
+  <div class="sensory-intro"><p class="eyebrow">Acessibilidade personalizada</p><h2 id="sensoryTitle">Vamos por partes, no seu ritmo.</h2><p>Uma tela mais tranquila, com instruções diretas e atalhos. Ative ou desative quando quiser — cada pessoa é diferente.</p></div>
+  <div class="quick-actions" aria-label="Ações rápidas">
+    <a class="quick-card" href="#hospitais"><span aria-hidden="true">⌕</span><strong>Ver unidade menos cheia</strong><small>Compare a demanda das unidades.</small></a>
+    <a class="quick-card" href="#agendar"><span aria-hidden="true">＋</span><strong>Agendar consulta</strong><small>Escolha médico, dia e horário.</small></a>
+    <button class="quick-card" type="button" id="overwhelmedBtn"><span aria-hidden="true">♡</span><strong>Estou sobrecarregado(a)</strong><small>Mostrar orientações simples.</small></button>
+    <a class="quick-card" href="#consultas"><span aria-hidden="true">▤</span><strong>Ver minhas consultas</strong><small>Consulte seus agendamentos.</small></a>
+  </div>
+  <div class="calm-message" id="calmMessage" role="status" hidden><strong>Vamos com calma.</strong><p>Você pode fazer uma coisa de cada vez. Não precisa resolver tudo agora. Se ajudar, respire lentamente, procure um lugar confortável e escolha apenas um dos atalhos acima. Se estiver em perigo ou precisar de atendimento urgente, ligue 192 (SAMU).</p><button type="button" class="btn ghost" id="calmClose">Entendi</button></div>
+  <div class="sensory-settings"><label><input type="checkbox" id="reduceMotion"> Reduzir animações e movimentos</label><label><input type="checkbox" id="simpleMode"> Deixar a página mais simples</label><label><input type="checkbox" id="largeTargets"> Botões maiores</label></div>
+</section>
+<main id="main" tabindex="-1">
+<section id="hospitais">
+  <div class="wrap">
+    <p class="eyebrow">Hospitais e UPAs · atualizado às <span id="upd">--:--</span></p>
+    <h1>Veja qual unidade está menos cheia</h1>
+    <p class="lead">A situação dos hospitais públicos e particulares, a ausência de médicos e o agendamento de consultas em um só lugar. Em emergência, ligue 192 (SAMU).</p>
+
+    <div class="filters">
+      <div class="seg" role="group" aria-label="Filtrar por tipo" id="hType">
+        <button type="button" data-t="todos" aria-pressed="true">Todas</button>
+        <button type="button" data-t="publico" aria-pressed="false">Públicas</button>
+        <button type="button" data-t="particular" aria-pressed="false">Particulares</button>
+      </div>
+      <div class="fld"><label class="f" for="hCat">Tipo de unidade</label><select id="hCat"></select></div>
+    </div>
+
+    <div class="sumrow" id="sumrow" aria-live="polite"></div>
+    <div class="hlist" id="hlist"></div>
+  </div>
+</section>
+
+<section id="mapa-hospitais" class="maps-section">
+  <div class="wrap">
+    <p class="eyebrow">Localização e deslocamento</p>
+    <h2>Hospitais próximos de você</h2>
+    <p class="lead">Permita o acesso à sua localização para encontrar hospitais próximos e calcular uma rota. A localização só é usada após sua autorização.</p>
+    <div class="maps-toolbar">
+      <button type="button" class="btn" id="findNearbyHospitals">Encontrar hospitais próximos</button>
+      <button type="button" class="btn ghost" id="openGoogleMapsSearch">Abrir busca no Google Maps</button>
+      <div class="seg" role="group" aria-label="Ordenar unidades do mapa" id="mapSort">
+        <button type="button" data-sort="dist" aria-pressed="true">Mais perto</button>
+        <button type="button" data-sort="demand" aria-pressed="false">Menos cheia</button>
+      </div>
+    </div>
+    <p class="maps-status" id="mapsStatus" role="status" aria-live="polite">Carregando o mapa…</p>
+    <div class="maps-layout">
+      <div id="hospitalMap" class="hospital-map" role="region" aria-label="Mapa de hospitais próximos"><p>Carregando o mapa…</p></div>
+      <div class="maps-results-wrap">
+        <h3>Resultados próximos</h3>
+        <div id="nearbyHospitalResults" class="nearby-results"><p class="maps-empty">Os hospitais encontrados aparecerão aqui.</p></div>
+        <div class="maps-route">
+          <label class="f" for="routeDestination">Calcular rota até</label>
+          <select id="routeDestination" disabled><option value="">Encontre hospitais primeiro</option></select>
+          <button type="button" class="btn" id="calculateHospitalRoute" disabled>Calcular rota rápida</button>
+          <div id="routeSummary" class="route-summary" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+    <p class="maps-disclaimer">Importante: as unidades, os locais no mapa e os números de lotação deste protótipo são fictícios. Resultados do Google Maps (quando configurado) não confirmam disponibilidade, atendimento ou tempo de espera. Em emergência, ligue 192 (SAMU).</p>
+  </div>
+</section>
+
+<section id="demanda">
+  <div class="wrap">
+    <div class="dhead">
+      <div>
+        <p class="eyebrow">Unidade selecionada</p>
+        <h2 id="dName">—</h2>
+        <p class="lead" id="dMeta"></p>
+      </div>
+      <div class="dsel"><label class="f" for="hospSel">Trocar de unidade</label><select id="hospSel"></select></div>
+    </div>
+    <div class="hero">
+      <div>
+        <h3 class="big" id="h1">Demanda <span class="lvl" id="lvlWord">alta</span> agora</h3>
+        <p class="lead" id="lvlAdvice" aria-live="polite"></p>
+        <div class="panel" style="margin-top:24px">
+          <p class="eyebrow">Nível de demanda · pontuação de 0 a 100</p>
+          <div class="meter" role="img" id="meterImg" aria-label="">
+            <div class="segs"><i class="s-ok"></i><i class="s-warn"></i><i class="s-hi"></i><i class="s-crit"></i></div>
+            <div class="mk" id="mk" style="left:0%"><b id="mkVal">0</b></div>
+            <div class="axis" aria-hidden="true"><span style="left:0%">0</span><span style="left:50%">50</span><span style="left:75%">75</span><span style="left:90%">90</span><span style="left:100%">100</span></div>
+          </div>
+          <ul class="legend">
+            <li><i style="background:var(--ok)"></i>Baixa</li>
+            <li><i style="background:var(--warn)"></i>Moderada</li>
+            <li><i style="background:var(--hi)"></i>Alta</li>
+            <li><i style="background:var(--crit)"></i>Crítica</li>
+          </ul>
+        </div>
+      </div>
+      <aside class="panel" aria-label="Números do pronto-atendimento">
+        <dl class="stats">
+          <div><dt>Espera estimada</dt><dd><span id="stWait">0</span> <small>min</small></dd></div>
+          <div><dt>Pacientes aguardando</dt><dd id="stFila">0</dd></div>
+          <div><dt>Médicos de plantão</dt><dd id="stPlant">0</dd></div>
+          <div><dt>Leitos ocupados</dt><dd><span id="stLeitos">0</span><small> de <span id="stTotal">80</span></small></dd></div>
+        </dl>
+        <p class="note">A espera estimada vale para pacientes classificados como pouco urgentes. Casos graves passam na frente.</p>
+      </aside>
+    </div>
+
+    <div class="sub">
+      <h2>Situação por setor</h2>
+      <div class="tbl">
+        <table>
+          <thead><tr><th scope="col">Setor</th><th scope="col">Ocupação</th><th scope="col">Espera</th><th scope="col">Situação</th></tr></thead>
+          <tbody id="sectors"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub">
+      <h2>Quem é atendido primeiro</h2>
+      <ul class="tri">
+        <li><i style="background:#D32F2F"></i><div><strong>Vermelho · emergência</strong><span>atendimento imediato</span></div></li>
+        <li><i style="background:#F57C00"></i><div><strong>Laranja · muito urgente</strong><span>até 10 min</span></div></li>
+        <li><i style="background:#FBC02D"></i><div><strong>Amarelo · urgente</strong><span>até 60 min</span></div></li>
+        <li><i style="background:#388E3C"></i><div><strong>Verde · pouco urgente</strong><span>até 120 min</span></div></li>
+        <li><i style="background:#1976D2"></i><div><strong>Azul · não urgente</strong><span>até 240 min</span></div></li>
+      </ul>
+      <p class="tri-note">A triagem segue o Protocolo de Manchester. O atendimento não é por ordem de chegada. Com a demanda alta, os casos verdes e azuis esperam mais. Em risco de vida, ligue 192 (SAMU).</p>
+    </div>
+  </div>
+</section>
+
+<section id="medicos">
+  <div class="wrap">
+    <p class="eyebrow">Corpo clínico</p>
+    <h2>Médicos e disponibilidade</h2>
+    <p class="lead">Veja quem está atendendo hoje, quem está ausente e quando é o próximo horário livre de cada médico.</p>
+    <p class="where">Unidade: <strong class="whereName">—</strong> · <a href="#hospitais">trocar de unidade</a></p>
+    <div class="filters">
+      <div class="fld"><label class="f" for="fQ">Buscar</label><input type="text" id="fQ" placeholder="Nome ou especialidade" autocomplete="off"></div>
+      <div class="fld"><label class="f" for="fEsp">Especialidade</label><select id="fEsp"></select></div>
+      <div class="seg" role="group" aria-label="Filtrar por situação" id="fStatus">
+        <button type="button" data-f="todos" aria-pressed="true">Todos</button>
+        <button type="button" data-f="hoje" aria-pressed="false">Atendem hoje</button>
+        <button type="button" data-f="ausentes" aria-pressed="false">Ausentes</button>
+      </div>
+    </div>
+    <p class="meta" id="docCount" aria-live="polite"></p>
+    <div class="docs" id="docs"></div>
+  </div>
+</section>
+
+<section id="agendar">
+  <div class="wrap">
+    <p class="eyebrow">Consultas ambulatoriais</p>
+    <h2>Agendar consulta</h2>
+    <p class="lead">Escolha o médico e a data. O site só mostra horários livres e avisa quando o médico estará ausente.</p>
+    <p class="where">Unidade: <strong class="whereName">—</strong> · <a href="#hospitais">trocar de unidade</a></p>
+    <div class="book">
+      <form class="form panel" id="form" novalidate>
+        <div class="row2">
+          <div><label class="f" for="esp">Especialidade</label><select id="esp"></select></div>
+          <div><label class="f" for="doc">Médico</label><select id="doc" disabled></select></div>
+        </div>
+        <div><label class="f" for="date">Data</label><input type="date" id="date"></div>
+        <fieldset>
+          <legend>Horário</legend>
+          <div class="slots" id="slots" role="radiogroup" aria-label="Horários disponíveis"></div>
+        </fieldset>
+        <div class="row2">
+          <div><label class="f" for="nome">Nome completo do paciente</label><input type="text" id="nome" autocomplete="name" placeholder="Ex.: Maria da Silva"></div>
+          <div><label class="f" for="tel">Telefone com DDD</label><input type="tel" id="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 90000-0000"></div>
+        </div>
+        <div>
+          <label class="f" for="motivo">Tipo de consulta</label>
+          <select id="motivo"><option>Primeira consulta</option><option>Retorno</option><option>Resultado de exames</option></select>
+        </div>
+        <div id="err" class="err" role="alert" hidden></div>
+        <div><button class="btn" type="submit" id="submit">Confirmar consulta</button></div>
+      </form>
+
+      <div>
+        <aside class="panel summary" aria-label="Resumo da consulta">
+          <h3>Resumo</h3>
+          <dl class="kv">
+            <dt>Unidade</dt><dd id="sUni" class="dim">—</dd>
+            <dt>Médico</dt><dd id="sMed" class="dim">—</dd>
+            <dt>Especialidade</dt><dd id="sEsp" class="dim">—</dd>
+            <dt>Data</dt><dd id="sData" class="dim">—</dd>
+            <dt>Horário</dt><dd id="sHora" class="dim">—</dd>
+            <dt>Duração</dt><dd id="sDur" class="dim">—</dd>
+            <dt>Local</dt><dd id="sLocal" class="dim">—</dd>
+          </dl>
+        </aside>
+        <div class="done" id="done" role="status" hidden></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="consultas">
+  <div class="wrap">
+    <p class="eyebrow">Neste aparelho</p>
+    <h2>Minhas consultas</h2>
+    <p class="lead">As consultas agendadas aparecem aqui. Para cancelar, libere o horário para outro paciente.</p>
+    <div class="appts" id="appts"></div>
+  </div>
+</section>
+
+<section id="equipe">
+  <div class="wrap">
+    <p class="eyebrow">Modo demonstração</p>
+    <h2>Painel da equipe</h2>
+    <p class="lead">Ajuste os números do plantão da unidade e veja o nível de demanda mudar na lista e no detalhe. Em um site real, cada hospital teria seu login, e esta área ficaria separada da página pública.</p>
+    <p class="where">Unidade: <strong class="whereName">—</strong> · <a href="#hospitais">trocar de unidade</a></p>
+    <div class="team">
+      <div class="panel ctl">
+        <div>
+          <div class="head"><label for="fila">Pacientes aguardando atendimento</label><output id="filaV" for="fila"></output></div>
+          <input type="range" id="fila" min="0" max="60" step="1">
+        </div>
+        <div>
+          <div class="head"><label for="plant">Médicos de plantão no pronto-atendimento</label><output id="plantV" for="plant"></output></div>
+          <input type="range" id="plant" min="1" max="10" step="1">
+        </div>
+        <div>
+          <div class="head"><label for="leitos" id="leitosL">Leitos ocupados</label><output id="leitosV" for="leitos"></output></div>
+          <input type="range" id="leitos" min="0" max="80" step="1">
+        </div>
+        <div>
+          <label class="f" for="absDoc">Registrar médico ausente hoje</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <select id="absDoc" style="flex:1 1 200px;width:auto"></select>
+            <button class="btn ghost" type="button" id="absBtn">Marcar ausente</button>
+          </div>
+          <div class="chips" id="absList" aria-live="polite"></div>
+        </div>
+        <div><button class="btn ghost small" type="button" id="reset">Restaurar valores de exemplo</button></div>
+      </div>
+
+      <div class="panel calc">
+        <h3>Como o nível de demanda é calculado</h3>
+        <p style="margin-top:10px">Duas medidas contam metade da pontuação cada uma.</p>
+        <p><code>ocupação = leitos ocupados ÷ leitos totais</code></p>
+        <p><code>pressão da fila = aguardando ÷ (médicos × 5 por hora)</code>, limitada a 100%</p>
+        <p><code>pontuação = 50% ocupação + 50% pressão da fila</code></p>
+        <p><code>espera estimada = aguardando ÷ médicos × 12 min</code></p>
+        <div class="tbl">
+          <table>
+            <thead><tr><th scope="col">Pontuação</th><th scope="col">Nível</th><th scope="col">Orientação ao paciente</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">0–49</td><td><span class="pill ok">Baixa</span></td><td>Pode vir sem espera relevante.</td></tr>
+              <tr><td class="mono">50–74</td><td><span class="pill warn">Moderada</span></td><td>Fluxo normal, com alguma espera.</td></tr>
+              <tr><td class="mono">75–89</td><td><span class="pill hi">Alta</span></td><td>Casos leves: prefira agendar.</td></tr>
+              <tr><td class="mono">90–100</td><td><span class="pill crit">Crítica</span></td><td>Venha só em caso de urgência.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="live" id="live"></div>
+        <p style="margin-top:14px">Em um sistema real, esses números chegam de cada hospital (triagem, ocupação de leitos e escala médica) por uma API, e o Saúde Agora reúne tudo em uma tela. Aqui a equipe digita os valores à mão para demonstrar a lógica.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Saúde Agora</strong> é um projeto de demonstração. Os hospitais, médicos, horários e números deste site são fictícios.</p>
+    <p><strong>Emergência:</strong> ligue 192 (SAMU) ou vá à unidade mais próxima. Não use o agendamento para casos urgentes.</p>
+  </div>
+</footer>
+
+<button type="button" class="help-fab" id="helpOpen" aria-haspopup="dialog" aria-controls="helpPanel" aria-expanded="false">
+  <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="currentColor"/><circle cx="8" cy="10.5" r="1.4" fill="var(--accent)"/><circle cx="12" cy="10.5" r="1.4" fill="var(--accent)"/><circle cx="16" cy="10.5" r="1.4" fill="var(--accent)"/></svg>
+  <span>Preciso de ajuda</span>
+</button>
+
+<div class="help" id="helpPanel" role="dialog" aria-modal="false" aria-labelledby="helpTitle" hidden>
+  <div class="help-h">
+    <div>
+      <h2 id="helpTitle" tabindex="-1">Assistente Saúde Agora</h2>
+      <p>Eu ajudo você a usar o site.</p>
+    </div>
+    <div class="help-hb">
+      <button type="button" id="helpSize">Letra maior</button>
+      <button type="button" id="helpClose">Fechar</button>
+    </div>
+  </div>
+  <div class="help-log" id="helpLog" role="log" aria-live="polite" aria-label="Conversa com o assistente"></div>
+  <div class="help-chips" id="helpChips" aria-label="Perguntas prontas"></div>
+  <label class="help-opt" id="helpAutoRow" for="helpAuto"><input type="checkbox" id="helpAuto"> Ler as respostas em voz alta</label>
+  <form class="help-f" id="helpForm" novalidate>
+    <label class="sr" for="helpIn">Escreva sua pergunta</label>
+    <input type="text" id="helpIn" placeholder="Escreva sua pergunta aqui" autocomplete="off">
+    <button class="btn" type="submit" id="helpSend">Enviar</button>
+  </form>
+  <p class="help-note">Eu sou uma inteligência artificial e posso errar. Não substituo o médico. Em emergência, ligue 192.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/schedule.js"></script>
+<script src="js/demand.js"></script>
+<script src="js/hospitals.js"></script>
+<script src="js/doctors.js"></script>
+<script src="js/booking.js"></script>
+<script src="js/appointments.js"></script>
+<script src="js/staff.js"></script>
+<script src="js/accessibility.js"></script>
+<script src="js/sensory-mode.js"></script>
+<script src="js/assistant.js"></script>
+<script src="js/main.js"></script>
+<script src="js/maps.js"></script>
+</body>
+</html>

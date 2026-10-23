@@ -1,0 +1,12 @@
+{
+  "name": "saude-agora",
+  "version": "2.0.0",
+  "description": "Protótipo acessível: demanda de hospitais, mapa, agenda de médicos e agendamento de consultas (dados fictícios).",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "npx --yes serve .",
+    "test": "node --test tests/run.js"
+  },
+  "engines": { "node": ">=18" }
+}
