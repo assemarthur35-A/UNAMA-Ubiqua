@@ -4,7 +4,7 @@ Protótipo de site acessível que mostra **qual hospital está menos cheio**, a 
 
 > ⚠️ **Projeto acadêmico de demonstração.** Hospitais, médicos, horários, lotação e os pontos do mapa são **fictícios**. Não use para decisões de saúde. Em emergência, ligue **192 (SAMU)**.
 
-**Autor:** [Seu nome] · [Curso/Disciplina] · UNAMA · [Professor(a)] · 2026
+**Autor:** [ASSEM ARTHUR FARIAS CÉSAR, JERSON CARLOS SANTOS COSTA, JOÃO VICTOR BACELAR NASCIMENTO, ADOLFO ALEIXO DE OLIVEIRA MORAES] · [Curso: ANALISE E DESENVOLVIMENTO DE SISTEMAS E CIÊNCIA DA COMPUTAÇÃO] · UNAMA · 2026
 
 ## Demonstração
 
